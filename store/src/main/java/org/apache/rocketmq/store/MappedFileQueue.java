@@ -197,9 +197,10 @@ public class MappedFileQueue implements Swappable {
             long fileTailOffset = file.getFileFromOffset() + this.mappedFileSize;
             if (fileTailOffset > offset) {
                 if (offset >= file.getFileFromOffset()) {
-                    file.setWrotePosition((int) (offset % this.mappedFileSize));
-                    file.setCommittedPosition((int) (offset % this.mappedFileSize));
-                    file.setFlushedPosition((int) (offset % this.mappedFileSize));
+                    int mappedFileOffset = (int) (offset % this.mappedFileSize);
+                    file.setWrotePosition(mappedFileOffset);
+                    file.setCommittedPosition(mappedFileOffset);
+                    file.setFlushedPosition(mappedFileOffset);
                 } else {
                     file.destroy(1000);
                     willRemoveFiles.add(file);
